@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject ball;
+    public Ball ball;
     public GameObject playercamera;
 
-    public float ballThrowingForce = 300f;
+    public float ballThrowingForce = 500f;
 
-    private bool holdingBall = true;
+    public bool holdingBall = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +21,15 @@ public class Player : MonoBehaviour
     {
         if (holdingBall)
         {
-            ball.transform.position = playercamera.transform.position + playercamera.transform.forward * 2; // ball move with player camera
+            ball.GetComponent<Rigidbody>().useGravity = false;
+            ball.transform.position = playercamera.transform.position + playercamera.transform.forward * 1.5f; // ball move with player camera
+            ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
 
             if (Input.GetMouseButtonDown(0))
             {
                 holdingBall = false;
+                ball.ActivateTrail();
                 ball.GetComponent<Rigidbody>().useGravity = true;
                 ball.GetComponent<Rigidbody>().AddForce(playercamera.transform.forward * ballThrowingForce);
             }
